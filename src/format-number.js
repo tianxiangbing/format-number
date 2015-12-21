@@ -75,12 +75,12 @@
                     }
                     formatTxt = _this.doFormat(txt);
                     $(v).val(formatTxt);
+                    $(this).attr('data-value', _this.getMoneyfloat($(v).val()));
                 } else {
                     txt = $(v).text();
                     formatTxt = _this.doFormat(txt);
                     $(v).attr('data-value', txt).text(formatTxt);
                 }
-                $(this).attr('data-value', $(v).val());
             });
 
             $(settings.trigger, parent).on('keyup', function(e) {
