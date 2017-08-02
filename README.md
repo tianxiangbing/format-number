@@ -5,7 +5,7 @@
 ![数字格式化](./example/format-number.jpg)
 
 Demo请点击[数字格式化demo](http://www.lovewebgames.com/jsmodule/format-number.html "数字格式化demo")
-#演示代码
+# 演示代码
 	<script src="../src/jquery-1.11.2.js"></script>
 	<script src="../src/format-number.js"></script>
 	<div>整数：<input type="text" data-type="int" data-name="int"/></div>
@@ -37,13 +37,13 @@ Demo请点击[数字格式化demo](http://www.lovewebgames.com/jsmodule/format-n
 	<script>
 	$('#sp_number').FormatNumber({decimal:4})
 	</script>
-#API
-##属性
-###trigger:dom|string
+# API
+## 属性
+### trigger:dom|string
 	触发器元素，可为input或标签元素(span/div)
-###parent	:dom|string
+### parent	:dom|string
 	委托对象，由于本插件对事件的绑定都以委托为主，如不传，默认代理到body上
-###decimal:	int
+### decimal:	int
 	小数位数，默认2位
-###minus: bool
+### minus: bool
 	是否支持负数，默认为false不支持
