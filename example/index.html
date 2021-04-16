@@ -1,3 +1,10 @@
+<!--
+ * @Author: 田想兵
+ * @Date: 2021-04-14 15:37:26
+ * @LastEditTime: 2021-04-15 10:27:00
+ * @github: https://github.com/tianxiangbing
+ * @Contact: 55342775@qq.com
+-->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -17,10 +24,14 @@
 		var n2 = new FormatNumber();
 		n2.init({trigger:$('[data-type="int2"]'),decimal:0,minus:true});
 	</script>
-	<div>两位小数(默认)：<input type="text" class="has-minus" value="1112212.221" data-type="number" data-name="as" /></div>
+	<div>两位小数(默认)：<input type="text" class="has-minus" value="1112212.221" data-type="number" data-name="as" /><input type="text" id="decimals" value="2"/><button id="btn_changedecimals">修改小数位</button></div>
 	<script>
 		var n3 = new FormatNumber();
 		n3.init({trigger:$('[data-type="number"]')});
+		$('#btn_changedecimals').click(function(){
+			var decimal = $('#decimals').val();
+			n3.update({decimal:parseInt(decimal)})
+		});
 	</script>
 	<div>3位小数并且可为负数：<input type="text" data-name="pc" data-type="pecent"/></div>
 	<script>

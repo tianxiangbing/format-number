@@ -1,4 +1,3 @@
-//原始文件，废弃
 /*
  * Created with Sublime Text 3.
  * license: http://www.lovewebgames.com/jsmodule/index.html
@@ -11,28 +10,43 @@
 ;
 (function(root, factory) {
     //amd
-    if (typeof define === 'function' && define.amd) {
-        define(['$'], factory);
-    } else if (typeof exports === 'object') { //umd
+    if (typeof exports === 'object') { //umd
         module.exports = factory();
     } else {
-        root.FormatNumber = factory(window.Zepto || window.jQuery || $);
+        root.InputNumber = factory(window.Zepto || window.jQuery || $);
     }
-})(this, function($) {
-    $.fn.FormatNumber = function(settings) {
+})(this, function() {
+    //添加xtype为InputNumber
+    if(Eui){
+        Eui.Extra.registerUiExtType('InputNumber', {
+            options: {
+                decimal:2
+            },
+            handler(target, options) {
+                var $target = Eui.getJqDom(target);
+                $target.FormatNumber(options);
+            }
+        });
+    }
+    $.fn.InputNumber = function(settings) {
         var arr = [];
         $(this).each(function() {
-            var options = $.extend({
-                trigger: $(this)
-            }, settings);
-            var number = new FormatNumber();
-            number.init(options);
-            arr.push(number);
+            if($(this).data('component')){
+                $(this).data('component').update(settings);
+            }else{
+                var options = $.extend({
+                    trigger: $(this)
+                }, settings);
+                var number = new InputNumber();
+                number.init(options);
+                $(this).data('component',number);
+                arr.push(number);
+            }
         });
         return arr;
     };
-    var FormatNumber = function() {};
-    FormatNumber.prototype = {
+    var InputNumber = function() {};
+    InputNumber.prototype = {
         init: function(settings) {
             var _this = this,
                 minus = ''
@@ -89,7 +103,7 @@
                 checkNumber.call(this, e)
             });
             $(settings.trigger, parent).on('keydown', function(e) {
-                console.log(e)
+                // console.log(e)
                 var valueArray = $(this).val().replace(/\,/gi,'').split('.');
                 //实现K\M
                 if(e.keyCode === 75 && valueArray!='0'){
@@ -288,5 +302,5 @@
             return s.replace(/^\./, "0.")
         }
     };
-    return FormatNumber;
+    return InputNumber;
 });

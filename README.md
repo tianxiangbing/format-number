@@ -1,3 +1,10 @@
+<!--
+ * @Author: 田想兵
+ * @Date: 2021-04-14 15:37:26
+ * @LastEditTime: 2021-04-15 10:09:31
+ * @github: https://github.com/tianxiangbing
+ * @Contact: 55342775@qq.com
+-->
 # format-number
 文本框数字或金额格式化
 效果如下图:
@@ -47,3 +54,5 @@ Demo请点击[数字格式化demo](http://www.lovewebgames.com/jsmodule/format-n
 	小数位数，默认2位
 ### minus: bool
 	是否支持负数，默认为false不支持
+### update:function
+	动态更新参数
