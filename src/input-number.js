@@ -100,6 +100,8 @@
             });
 
             $(settings.trigger, parent).on('keyup', function(e) {
+                let value = e.target.value;
+                e.target.value = value.replace(/[^\d,,\.\-]]*/g,'');
                 checkNumber.call(this, e)
             });
             //获取当前光标位置
@@ -117,20 +119,6 @@
             $(settings.trigger, parent).on('keydown', function(e) {
                 // console.log(e.keyCode)
                 // console.log(e)
-                if(e.keyCode == 8){
-                    return;
-                }
-                var pos = getPosition(e.target);
-                // console.log(pos)
-                if(e.key=='-' && pos == 0 && settings.minus ){
-                    return;
-                }
-                if(e.key =='.' && pos==$(this).val().length && !isNaN($(this).val()) && $(this).val().indexOf('.')==-1){
-                    return;
-                }
-                if(isNaN(e.key) ){
-                    return false;
-                }
                 var valueArray = $(this).val().replace(/\,/gi,'').split('.');
                 //实现K\M
                 if(e.keyCode === 75 && valueArray!='0'){
@@ -149,6 +137,20 @@
                     checkNumber.call(this, e)
                     return false;
                 }
+                if(e.keyCode == 8){
+                    return;
+                }
+                var pos = getPosition(e.target);
+                // console.log(pos)
+                if(e.key=='-' && pos == 0 && settings.minus ){
+                    return;
+                }
+                if(e.key =='.' && pos==$(this).val().length && !isNaN($(this).val()) && $(this).val().indexOf('.')==-1){
+                    return;
+                }
+                if(isNaN(e.key) ){
+                    return false;
+                }
                 checkNumber.call(this, e)
             });
             $(settings.trigger, parent).on('focus', function(e) {
@@ -156,6 +158,8 @@
                 $(this).val(formatTxt);
             })
             $(settings.trigger, parent).on('blur', function(e) {
+                let value = e.target.value;
+                e.target.value = value.replace(/[^\d,,\.\-]]*/g,'');
                 checkNumber.call(this, e)
                 var formatTxt = _this.doFormat(e.target.value);
                 $(this).val(formatTxt);
@@ -327,11 +331,6 @@
             if ($.isNumeric(s)) {
                 s = s.toString();
             }
-            if (typeof s === 'string') {
-                s = s.replace(/^(-?\d+)((\.\d*)?)$/, function(v1, v2, v3) {
-                    return v2.replace(/\d{1,3}(?=(\d{3})+$)/g, '$&,') + (v3.slice(0, _this.settings.decimal + 1) );
-                });
-            }
             if(_this.settings.decimal >0 && _this.settings.isAutoZero && !isNaN(s)){
                 var arr = s.split('.');
                 var decimals= _this.settings.decimal;
@@ -341,6 +340,11 @@
                 }else{
                     s += '.'+ Array(decimals + 1).join(0).slice(0, Math.max(0, decimals ));
                 }
+            }
+            if (typeof s === 'string') {
+                s = s.replace(/^(-?\d+)((\.\d*)?)$/, function(v1, v2, v3) {
+                    return v2.replace(/\d{1,3}(?=(\d{3})+$)/g, '$&,') + (v3.slice(0, _this.settings.decimal + 1) );
+                });
             }
             return s.replace(/^\./, "0.")
         }
