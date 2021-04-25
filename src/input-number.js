@@ -17,14 +17,14 @@
     }
 })(this, function() {
     //添加xtype为InputNumber
-    if(Eui){
+    if(window.Eui){
         Eui.Extra.registerUiExtType('InputNumber', {
             options: {
                 decimal:2
             },
             handler(target, options) {
                 var $target = Eui.getJqDom(target);
-                $target.FormatNumber(options);
+                $target.InputNumber(options);
             }
         });
     }
@@ -102,8 +102,35 @@
             $(settings.trigger, parent).on('keyup', function(e) {
                 checkNumber.call(this, e)
             });
+            //获取当前光标位置
+            const getPosition = function (element) {
+                let cursorPos = 0;
+                if (document.selection) {//IE
+                    var selectRange = document.selection.createRange();
+                    selectRange.moveStart('character', -element.value.length);
+                    cursorPos = selectRange.text.length;
+                } else if (element && (element.selectionStart || element.selectionStart == '0')) {
+                    cursorPos = element.selectionStart;
+                }
+                return cursorPos;
+            }
             $(settings.trigger, parent).on('keydown', function(e) {
+                // console.log(e.keyCode)
                 // console.log(e)
+                if(e.keyCode == 8){
+                    return;
+                }
+                var pos = getPosition(e.target);
+                // console.log(pos)
+                if(e.key=='-' && pos == 0 && settings.minus ){
+                    return;
+                }
+                if(e.key =='.' && pos==$(this).val().length && !isNaN($(this).val()) && $(this).val().indexOf('.')==-1){
+                    return;
+                }
+                if(isNaN(e.key) ){
+                    return false;
+                }
                 var valueArray = $(this).val().replace(/\,/gi,'').split('.');
                 //实现K\M
                 if(e.keyCode === 75 && valueArray!='0'){
@@ -124,8 +151,14 @@
                 }
                 checkNumber.call(this, e)
             });
+            $(settings.trigger, parent).on('focus', function(e) {
+                var formatTxt = e.target.value.replace(/\,/g,'');
+                $(this).val(formatTxt);
+            })
             $(settings.trigger, parent).on('blur', function(e) {
                 checkNumber.call(this, e)
+                var formatTxt = _this.doFormat(e.target.value);
+                $(this).val(formatTxt);
                 if($(this).val()=='-'){
                     $(this).val('');
                     $(this).attr('data-value', '');
@@ -141,7 +174,7 @@
             function checkNumber(e) {
                 var name = $(this).attr('data-name'),
                     id = name.split('.')[1] || name.split('.')[0];
-                GetNumberResult(e, $(this)[0], regex);
+                // GetNumberResult(e, $(this)[0], regex);
                 var v = _this.getMoneyfloat($(this).val());
                 $('#' + id).val(v);
                 $(this).attr('data-value', v);
@@ -235,7 +268,8 @@
                     (tempValueArray[0].length > maxLength ? tempValueArray[0].substr(0, maxLength) : tempValueArray[0]) + "." + tempValueArray[1] :
                     (tempValue.length > maxLength ? tempValue.substr(0, maxLength) : tempValue);
 
-                var result = _this.doFormat(tempValue);
+                // var result = _this.doFormat(tempValue);
+                var result = tempValue;
                 if (isminus) result = '-' + result;
                 if (result == null) {
                     return;
@@ -294,11 +328,20 @@
                 s = s.toString();
             }
             if (typeof s === 'string') {
-                s = s.replace(/^(\d+)((\.\d*)?)$/, function(v1, v2, v3) {
-                    return v2.replace(/\d{1,3}(?=(\d{3})+$)/g, '$&,') + (v3.slice(0, _this.settings.decimal + 1) || '.00');
+                s = s.replace(/^(-?\d+)((\.\d*)?)$/, function(v1, v2, v3) {
+                    return v2.replace(/\d{1,3}(?=(\d{3})+$)/g, '$&,') + (v3.slice(0, _this.settings.decimal + 1) );
                 });
             }
-
+            if(_this.settings.decimal >0 && _this.settings.isAutoZero && !isNaN(s)){
+                var arr = s.split('.');
+                var decimals= _this.settings.decimal;
+                if(arr.length>1){
+                    var d = arr.length ==1?0:arr[1].length;
+                    s += Array(decimals + 1).join(0).slice(0, Math.max(0, decimals - d));
+                }else{
+                    s += '.'+ Array(decimals + 1).join(0).slice(0, Math.max(0, decimals ));
+                }
+            }
             return s.replace(/^\./, "0.")
         }
     };

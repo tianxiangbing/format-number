@@ -1,7 +1,7 @@
 <!--
  * @Author: 田想兵
  * @Date: 2021-04-14 15:37:26
- * @LastEditTime: 2021-04-15 10:27:00
+ * @LastEditTime: 2021-04-21 11:27:29
  * @github: https://github.com/tianxiangbing
  * @Contact: 55342775@qq.com
 -->
@@ -13,20 +13,20 @@
 </head>
 <body>
 	<script src="../src/jquery-1.11.2.js"></script>
-	<script src="../src/format-number.js"></script>
+	<script src="../src/input-number.js"></script>
 	<div>整数：<input type="text" data-type="int" data-name="int"/></div>
 	<script>
-		var n1 = new FormatNumber();
+		var n1 = new InputNumber();
 		n1.init({trigger:$('[data-type="int"]'),decimal:0});
 	</script>
 	<div>整数可为负：<input type="text" data-type="int2" data-name="int2"/></div>
 	<script>
-		var n2 = new FormatNumber();
+		var n2 = new InputNumber();
 		n2.init({trigger:$('[data-type="int2"]'),decimal:0,minus:true});
 	</script>
 	<div>两位小数(默认)：<input type="text" class="has-minus" value="1112212.221" data-type="number" data-name="as" /><input type="text" id="decimals" value="2"/><button id="btn_changedecimals">修改小数位</button></div>
 	<script>
-		var n3 = new FormatNumber();
+		var n3 = new InputNumber();
 		n3.init({trigger:$('[data-type="number"]')});
 		$('#btn_changedecimals').click(function(){
 			var decimal = $('#decimals').val();
@@ -35,17 +35,22 @@
 	</script>
 	<div>3位小数并且可为负数：<input type="text" data-name="pc" data-type="pecent"/></div>
 	<script>
-		var n4 = new FormatNumber();
+		var n4 = new InputNumber();
 		n4.init({trigger:$('[data-type="pecent"]'),decimal:3,minus:true});
 	</script>
 	<div>4位小数并且不可为负数：<input type="text" data-name="pc" data-type="pecent2"/></div>
 	<script>
-		var n5 = new FormatNumber();
+		var n5 = new InputNumber();
 		n5.init({trigger:$('[data-type="pecent2"]'),decimal:4});
+	</script>
+	<div>4位小数并且可为负数并自动补0：<input type="text" data-name="pc" data-type="pecent3"/></div>
+	<script>
+		var n6 = new InputNumber();
+		n6.init({trigger:$('[data-type="pecent3"]'),decimal:4,minus:true,isAutoZero:true});
 	</script>
 	<div>标签：123123123.13211=<span id="sp_number">123123123.11</span></div>
 	<script>
-	$('#sp_number').FormatNumber({decimal:4})
+	$('#sp_number').InputNumber({decimal:4})
 	</script>
 </body>
 </html>
