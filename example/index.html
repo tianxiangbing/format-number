@@ -1,7 +1,7 @@
 <!--
  * @Author: 田想兵
  * @Date: 2021-04-14 15:37:26
- * @LastEditTime: 2021-04-21 11:27:29
+ * @LastEditTime: 2021-05-28 14:42:45
  * @github: https://github.com/tianxiangbing
  * @Contact: 55342775@qq.com
 -->
@@ -43,10 +43,13 @@
 		var n5 = new InputNumber();
 		n5.init({trigger:$('[data-type="pecent2"]'),decimal:4});
 	</script>
-	<div>4位小数并且可为负数并自动补0：<input type="text" data-name="pc" data-type="pecent3"/></div>
+	<div>4位小数并且可为负数并自动补0：<input type="text" style="width:400px" data-name="pc" data-type="pecent3"/><input type="text" id="decimals2" value="4"/><button id="btn_changedecimals2">修改小数位</button></div>
 	<script>
-		var n6 = new InputNumber();
-		n6.init({trigger:$('[data-type="pecent3"]'),decimal:4,minus:true,isAutoZero:true});
+		$('[data-type="pecent3"]').InputNumber({trigger:$('[data-type="pecent3"]'),decimal:4,minus:true,isAutoZero:true,maxLength:8});
+		$('#btn_changedecimals2').click(function(){
+			var decimal = $('#decimals2').val();
+			$('[data-type="pecent3"]').InputNumber({decimal:parseInt(decimal),formatThousand:true})
+		});
 	</script>
 	<div>标签：123123123.13211=<span id="sp_number">123123123.11</span></div>
 	<script>
